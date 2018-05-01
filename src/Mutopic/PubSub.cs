@@ -1,3 +1,4 @@
+using Mutopic.Middleware;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,41 +11,24 @@ namespace Mutopic
     internal class PubSub : IPubSub
     {
         readonly ConcurrentDictionary<string, List<IPubSubSubscription>> _subscribers = new ConcurrentDictionary<string, List<IPubSubSubscription>>();
-        readonly ConcurrentDictionary<Type, string[]> _topicsFromTypeInheritance = new ConcurrentDictionary<Type, string[]>();
+        private readonly IPublishMiddleware[] _publishMiddlewares;
 
-        public Func<Type, string> TypeToTopicnameStrategy { get; }
-        public Func<Type, string[]> TypeToInheritedTopicsStrategy { get; }
-
-        public PubSub(Func<Type, string> typeToTopicnameStrategy = null, Func<Type, string[]> typeToInheritedTopicsStrategy = null)
+        public PubSub(params IPublishMiddleware[] publishMiddlewares)
         {
-            TypeToTopicnameStrategy = typeToTopicnameStrategy ?? ((t) => t.Name);
-            TypeToInheritedTopicsStrategy = typeToInheritedTopicsStrategy ?? (t => t.GetAllInheritedTypes(true).Select(x => TypeToTopicnameStrategy(x)).ToArray());
+            _publishMiddlewares = publishMiddlewares;
         }
 
         #region Publish
 
-        public void Publish(object message, params string[] topicNames) => Publish(message, false, topicNames);
-
-        public void Publish(object message, bool topicNamesOnly, params string[] topicNames)
+        public void Publish(object message, params string[] topicNames)
         {
             if (message == null) return;
 
-            if (!topicNamesOnly)
-            {
-                var messageType = message.GetType();
-                if (!_topicsFromTypeInheritance.TryGetValue(messageType, out var topicsFromTypeInheritance))
-                {
-                    topicsFromTypeInheritance = TypeToInheritedTopicsStrategy(messageType);
-                    _topicsFromTypeInheritance.TryAdd(messageType, topicsFromTypeInheritance);
-                }
+            var context = (true, message, topicNames);
+            foreach (var middleware in _publishMiddlewares)
+                context = middleware.SetupContext(context);
 
-                foreach (var topic in topicsFromTypeInheritance)
-                {
-                    PublishInternal(topic, message);
-                }
-            }
-
-            foreach (var topic in topicNames)
+            foreach (var topic in context.topicNames)
             {
                 PublishInternal(topic, message);
             }
@@ -84,7 +68,7 @@ namespace Mutopic
 
         public IPubSubSubscription Subscribe<T>(string topicName, Action<T> handler)
         {
-            Action<object> protectTypeHandler = o => { if (o is T t) handler(t); };
+            void protectTypeHandler(object o) { if (o is T t) handler(t); }
 
             var subscription = new PubSubSubscription(this, topicName, protectTypeHandler);
 

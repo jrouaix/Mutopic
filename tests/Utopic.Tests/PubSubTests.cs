@@ -43,11 +43,17 @@ namespace Utopic.Tests
         public void Should_not_throw_exception_from_handler()
         {
             var sut = new PubSub();
+            var received = new List<object>();
+            sut.OnSubscriptionException += (sub, mess, ex) => { received.Add(mess); };
 
             using (var subscription = sut.Subscribe("topic", (object message) => throw new IndexOutOfRangeException()))
             {
-                sut.Publish("haha", "topic");
-            };
+                sut.Publish(42, "topic");
+                sut.Publish("message", "topic");
+                sut.Publish("dead letter", "no_one_listen_topic"); // no handler subscribed on this topic
+            }
+
+            received.ShouldBe(new object[] { 42, "message" });
         }
     }
 }

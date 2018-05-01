@@ -6,5 +6,6 @@ namespace Utopic
 {
     public interface IPubSubSubscription : IDisposable
     {
+        Action<object> Handler { get; }
     }
 }

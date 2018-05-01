@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace Utopic
 {
+    public delegate void SubscriptionExceptionHandler(IPubSubSubscription subscription, object message, Exception exception);
 
     public interface IPubSub
     {
@@ -25,7 +26,8 @@ namespace Utopic
         /// <param name="topicNames">Named topic names</param>
         void Publish(object message, bool topicNamesOnly, params string[] topicNames);
 
-
         IPubSubSubscription Subscribe<T>(string topicName, Action<T> handler);
+
+        event SubscriptionExceptionHandler OnSubscriptionException;
     }
 }

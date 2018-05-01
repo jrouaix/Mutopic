@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Utopic
 {
-    public class PubSub : IPubSub
+    internal class PubSub : IPubSub
     {
-        readonly ConcurrentDictionary<string, List<Action<object>>> _subscribers = new ConcurrentDictionary<string, List<Action<object>>>();
+        readonly ConcurrentDictionary<string, List<IPubSubSubscription>> _subscribers = new ConcurrentDictionary<string, List<IPubSubSubscription>>();
         readonly ConcurrentDictionary<Type, string[]> _topicsFromTypeInheritance = new ConcurrentDictionary<Type, string[]>();
 
         public Func<Type, string> TypeToTopicnameStrategy { get; }
@@ -60,18 +60,17 @@ namespace Utopic
 
         void PublishInternal(string topicName, object message)
         {
-            if (_subscribers.TryGetValue(topicName, out List<Action<object>> handlers))
+            if (_subscribers.TryGetValue(topicName, out var subscriptions))
             {
-                foreach (var handler in handlers)
+                foreach (var subscription in subscriptions)
                 {
                     try
                     {
-                        handler(message);
+                        subscription.Handler(message);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        // Disable any published message to handler
-                        // to fuck the publisher
+                        RaiseOnSubscriptionException(subscription, message, ex);
                     }
                 }
             }
@@ -87,52 +86,46 @@ namespace Utopic
         {
             Action<object> protectTypeHandler = o => { if (o is T t) handler(t); };
 
+            var subscription = new PubSubSubscription(this, topicName, protectTypeHandler);
+
             lock (_syncLock)
             {
                 if (_subscribers.TryGetValue(topicName, out var previousHandlers))
                 {
-                    var newHandlers = new List<Action<object>>(previousHandlers) { protectTypeHandler };
-                    _subscribers.TryUpdate(topicName, newHandlers, previousHandlers);
+                    var newSubscriptions = new List<IPubSubSubscription>(previousHandlers) { subscription };
+                    _subscribers.TryUpdate(topicName, newSubscriptions, previousHandlers);
                 }
                 else
                 {
-                    var newHandlers = new List<Action<object>>(new[] { protectTypeHandler });
-                    _subscribers.TryAdd(topicName, newHandlers);
+                    var newSubscriptions = new List<IPubSubSubscription>(new[] { subscription });
+                    _subscribers.TryAdd(topicName, newSubscriptions);
                 }
             }
-                
-            return new PubSubSubscription(this, topicName, protectTypeHandler);
+
+            return subscription;
         }
 
-        internal void Unsubscribe(string topicName, Action<object> handler)
+        internal void Unsubscribe(string topicName, IPubSubSubscription subscription)
         {
             lock (_syncLock)
             {
-                if (!_subscribers.TryGetValue(topicName, out var previousHandlers)) return;
+                if (!_subscribers.TryGetValue(topicName, out var previous)) return;
 
-                var newHandlers = new List<Action<object>>(previousHandlers);
-                newHandlers.Remove(handler);
+                var newSubscriptions = new List<IPubSubSubscription>(previous);
+                newSubscriptions.Remove(subscription);
 
-                _subscribers.TryUpdate(topicName, newHandlers, previousHandlers);
+                _subscribers.TryUpdate(topicName, newSubscriptions, previous);
             }
         }
 
-        internal class PubSubSubscription : IPubSubSubscription
-        {
-            readonly PubSub _pubsub;
-            readonly string _topicName;
-            readonly Action<object> _handler;
 
-            public PubSubSubscription(PubSub pubsub, string topicName, Action<object> handler)
-            {
-                _pubsub = pubsub;
-                _topicName = topicName;
-                _handler = handler;
-            }
 
-            public void Dispose() => _pubsub.Unsubscribe(_topicName, _handler);
-        }
+        #endregion
 
+        #region Events
+        private void RaiseOnSubscriptionException(IPubSubSubscription subscription, object message, Exception exception) => OnSubscriptionException?.Invoke(subscription, message, exception);
+
+        public event SubscriptionExceptionHandler OnSubscriptionException;
         #endregion
     }
 }

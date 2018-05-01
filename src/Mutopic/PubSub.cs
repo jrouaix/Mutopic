@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Utopic
+namespace Mutopic
 {
     internal class PubSub : IPubSub
     {

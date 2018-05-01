@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Utopic\Utopic.csproj" />
+    <ProjectReference Include="..\..\src\Mutopic\Mutopic.csproj" />
   </ItemGroup>
 
 </Project>

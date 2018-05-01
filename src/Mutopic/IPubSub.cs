@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Utopic
+namespace Mutopic
 {
     public delegate void SubscriptionExceptionHandler(IPubSubSubscription subscription, object message, Exception exception);
 

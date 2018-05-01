@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Utopic.Tests
+namespace Mutopic.Tests
 {
     public class PubSubTests
     {

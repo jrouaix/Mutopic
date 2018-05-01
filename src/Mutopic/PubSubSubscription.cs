@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Utopic
+namespace Mutopic
 {
     internal class PubSubSubscription : IPubSubSubscription
     {

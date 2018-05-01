@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utopic", "src\Utopic\Utopic.csproj", "{58C7B442-DB0B-4F4F-A7BF-92D9D08D2E43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mutopic", "src\Mutopic\Mutopic.csproj", "{58C7B442-DB0B-4F4F-A7BF-92D9D08D2E43}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{80180D3B-6795-4717-9A79-2D4BC4419F73}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E599CA15-BEA2-4967-96F9-9B9CE842F8B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utopic.Tests", "tests\Utopic.Tests\Utopic.Tests.csproj", "{4206F7E1-0A00-40D3-ADE7-1D5B8120D48A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutopic.Tests", "tests\Mutopic.Tests\Mutopic.Tests.csproj", "{4206F7E1-0A00-40D3-ADE7-1D5B8120D48A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utopic.Reactive", "Utopic.Reactive\Utopic.Reactive.csproj", "{9A9BB7D8-08BD-4C48-A198-C4599F01E599}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutopic.Reactive", "src\Mutopic.Reactive\Mutopic.Reactive.csproj", "{9A9BB7D8-08BD-4C48-A198-C4599F01E599}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

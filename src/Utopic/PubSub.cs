@@ -123,7 +123,17 @@ namespace Utopic
         #endregion
 
         #region Events
-        private void RaiseOnSubscriptionException(IPubSubSubscription subscription, object message, Exception exception) => OnSubscriptionException?.Invoke(subscription, message, exception);
+        private void RaiseOnSubscriptionException(IPubSubSubscription subscription, object message, Exception exception)
+        {
+            try
+            {
+                OnSubscriptionException?.Invoke(subscription, message, exception);
+            }
+            catch (Exception)
+            {
+                // lost for ever :'(
+            }
+        }
 
         public event SubscriptionExceptionHandler OnSubscriptionException;
         #endregion

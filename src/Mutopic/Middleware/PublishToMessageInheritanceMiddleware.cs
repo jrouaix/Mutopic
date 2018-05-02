@@ -16,6 +16,7 @@ namespace Mutopic.Middleware
         public (bool shouldPublish, object message, string[] topicNames) SetupContext((bool shouldPublish, object message, string[] topicNames) context)
         {
             (bool shouldPublish, object message, string[] topicNames) = context;
+            if (message == null) return context; // early return
 
             var messageType = message.GetType();
             if (!_topicsFromTypeInheritance.TryGetValue(messageType, out var topicsFromTypeInheritance))

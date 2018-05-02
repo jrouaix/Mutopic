@@ -24,15 +24,17 @@ namespace Mutopic
         {
             if (message == null) return;
 
-            var context = (true, message, topicNames);
+            var context = (shouldPublish: true, message, topicNames);
             foreach (var middleware in _publishMiddlewares)
                 context = middleware.SetupContext(context);
+
+            if (!context.shouldPublish) return;
 
             foreach (var topic in context.topicNames)
             {
                 PublishInternal(topic, message);
             }
-
+            
             // THIS WAS UNTESTED / UNUSED / CAN BE DONE EASY BY A PIPELINE ?
             //var mes = message as IMessage;
             //if (mes != null)

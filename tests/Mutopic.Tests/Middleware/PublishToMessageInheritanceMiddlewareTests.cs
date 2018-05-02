@@ -16,7 +16,7 @@ namespace Mutopic.Tests.Middleware
             bool expectedShouldPublish, object expectedMessage, string[] expectedTopicNames
             )
         {
-            var sut = new PublishToMessageInheritanceMiddleware();
+            var sut = new MessageInheritancePublishMiddleware();
 
             var result = sut.SetupContext((shouldPublish, message, topicNames));
 
@@ -39,16 +39,16 @@ namespace Mutopic.Tests.Middleware
                 var message = (IA)new A();
                 yield return new object[]
                 {
-                true, message, new string[0],
-                true, message, new [] {nameof(A), nameof(Object), nameof(IA)}
+                true, message, new string[]{"test" },
+                true, message, new [] { "test", nameof(A), nameof(Object), nameof(IA)}
                 };
             }
             {
                 var message = new B();
                 yield return new object[]
                 {
-                true, message, new string[0],
-                true, message, new [] { nameof(B), nameof(A), nameof(Object), nameof(IA), nameof(IB)}
+                true, message, new string[]{"test1", "test2" },
+                true, message, new [] { "test1", "test2", nameof(B), nameof(A), nameof(Object), nameof(IA), nameof(IB)}
                 };
             }
             {

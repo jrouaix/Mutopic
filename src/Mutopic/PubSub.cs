@@ -32,9 +32,9 @@ namespace Mutopic
 
             foreach (var topic in context.topicNames)
             {
-                PublishInternal(topic, message);
+                PublishInternal(topic, context.message);
             }
-            
+
             // THIS WAS UNTESTED / UNUSED / CAN BE DONE EASY BY A PIPELINE ?
             //var mes = message as IMessage;
             //if (mes != null)

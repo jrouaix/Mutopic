@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Mutopic.Middleware
 {
-    internal class PublishToMessageInheritanceMiddleware : IPublishMiddleware
+    internal class MessageInheritancePublishMiddleware : IPublishMiddleware
     {
         /// <summary>
         /// This is just a cache

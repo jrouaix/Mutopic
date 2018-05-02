@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Mutopic.Middleware;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -68,6 +69,27 @@ namespace Mutopic.Tests
             {
                 sut.Publish(42, TOPIC);
             }
+        }
+
+        [Fact]
+        public void Should_publish_nothing_if_context_setup_says_so()
+        {
+            var sut = new PubSub(
+                new GenericPublishMiddleware(ctx =>
+                {
+                    if (ctx.message is string) return ctx;
+                    else return (false, null, null);
+                }));
+
+            var received = new List<object>();
+            using (var subscription = sut.Subscribe(TOPIC, (object message) => { received.Add(message); }))
+            {
+                sut.Publish(42, TOPIC);
+                sut.Publish("message is a string", TOPIC);
+                sut.Publish("dead letter", "no_one_listen_topic"); // no handler subscribed on this topic
+            }
+
+            received.ShouldBe(new object[] { "message is a string" });
         }
     }
 }

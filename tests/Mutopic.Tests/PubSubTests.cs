@@ -91,5 +91,19 @@ namespace Mutopic.Tests
 
             received.ShouldBe(new object[] { "message is a string" });
         }
+
+        [Fact]
+        public void Should_not_publish_same_message_twice_in_the_same_topic()
+        {
+            var sut = new PubSub();
+
+            var receivedCount = 0;
+            using (var subscription = sut.Subscribe(TOPIC, (object message) => receivedCount++))
+            {
+                sut.Publish(42, TOPIC, TOPIC, TOPIC, TOPIC);
+            }
+
+            receivedCount.ShouldBe(1);
+        }
     }
 }

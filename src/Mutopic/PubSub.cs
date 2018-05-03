@@ -30,7 +30,7 @@ namespace Mutopic
 
             if (!context.shouldPublish) return;
 
-            foreach (var topic in context.topicNames)
+            foreach (var topic in context.topicNames.Distinct())
             {
                 PublishInternal(topic, context.message);
             }

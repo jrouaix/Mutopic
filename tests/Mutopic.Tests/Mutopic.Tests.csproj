@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Mutopic.Reactive\Mutopic.Reactive.csproj" />
     <ProjectReference Include="..\..\src\Mutopic\Mutopic.csproj" />
   </ItemGroup>
 

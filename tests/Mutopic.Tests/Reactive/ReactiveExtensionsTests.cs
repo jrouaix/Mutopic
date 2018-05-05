@@ -33,7 +33,7 @@ namespace Mutopic.Tests.Reactive
                     sut.Publish(42, TOPIC);
                 }
 
-                sut.Publish(42, TOPIC); // no effect here cause observable is disposed
+                sut.Publish(42, TOPIC); // no effect here cause observable subscription is disposed
             }
 
             received.ShouldBe(new[]

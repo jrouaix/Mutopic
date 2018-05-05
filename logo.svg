@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="465.83048"
-     inkscape:cy="522.34656"
+     inkscape:cx="233.68762"
+     inkscape:cy="408.06085"
      inkscape:document-units="mm"
      inkscape:current-layer="g5547"
      showgrid="false"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -63,7 +63,9 @@
        transform="translate(-5.8799296,69.757346)">
       <g
          id="g5685"
-         transform="translate(3.4017857,52.916667)">
+         transform="matrix(1.0119274,0,0,1.0007737,3.2039163,52.842855)"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
         <path
            style="fill:#ff0000;fill-opacity:1;stroke:#666666;stroke-width:0.26458332"
            d="m 43.487784,30.330965 1.730645,10.584365 c 0.05645,-0.01296 0.112945,-0.02572 0.169497,-0.03824 z m 26.8118,7.669816 -7.111711,7.859469 c 0.04201,0.03859 0.08387,0.07735 0.125574,0.116271 z m -49.525658,8.510074 9.363769,5.25136 c 0.02787,-0.05075 0.05595,-0.101399 0.08423,-0.151929 z M 70.49027,63.088654 c -0.0027,0.05668 -0.0056,0.113356 -0.0088,0.170016 l 10.538376,0.486791 z m -41.288951,7.035231 -9.938929,4.233333 10.010758,-4.073654 c -0.02416,-0.05313 -0.04811,-0.106355 -0.07183,-0.159679 z m 32.215602,9.258866 c -0.04689,0.03378 -0.09391,0.06737 -0.141075,0.100769 l 6.299874,8.694558 z"
@@ -136,7 +138,9 @@
       </g>
       <g
          id="g5758"
-         transform="translate(2.2678571,42.71131)">
+         transform="translate(2.2678571,42.71131)"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
         <text
            xml:space="preserve"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:51.96517563px;line-height:1.25;font-family:'Miriam Libre';-inkscape-font-specification:'Miriam Libre';letter-spacing:0px;word-spacing:0px;fill:#1d7373;fill-opacity:1;stroke:none;stroke-width:1.29912937"

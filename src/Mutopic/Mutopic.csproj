@@ -1,8 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>Latest</LangVersion>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Description>Micro topic pubsub library.</Description>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/jrouaix/Mutopic</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/jrouaix/Mutopic/master/icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/jrouaix/Mutopic</RepositoryUrl>
+    <PackageTags>topic pubsub publish subscribe reactive rx</PackageTags>
   </PropertyGroup>
 
 </Project>

@@ -11,3 +11,5 @@ Micro, yet turbocharged, C# pubsub library.
 
 Using NuGet Package Manager Console:
 `PM> Install-Package Mutopic`
+
+

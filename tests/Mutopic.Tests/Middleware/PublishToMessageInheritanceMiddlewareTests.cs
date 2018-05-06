@@ -9,6 +9,44 @@ namespace Mutopic.Tests.Middleware
 {
     public class PublishToMessageInheritanceMiddlewareTests
     {
+        interface IA { }
+        interface IB { }
+        interface IC { }
+
+        class A : IA { }
+        class B : A, IB { }
+        class C : IA, IC { }
+
+        [Fact]
+        public void Example()
+        {
+            const string TOPIC = "topic";
+
+            var sut = new PubSubBuilder()
+                // this is middleware
+                // it will propage messages in all their inheritance topic names
+                .WithMessageInheritancePublishing()
+                .Build();
+
+            var b = new B();
+
+            var topicReceived = new List<object>();
+            var AReceived = new List<object>();
+            var IBReceived = new List<object>();
+            using (sut.Subscribe<object>(TOPIC, topicReceived.Add))
+            using (sut.Subscribe<A>(typeof(A).Name, AReceived.Add))
+            using (sut.Subscribe<IB>(typeof(IB).Name, IBReceived.Add))
+            {
+                sut.Publish(b, TOPIC);
+            }
+
+            // Message have been propagaged in multiple topic names
+            topicReceived.ShouldBe(new object[] { b });
+            AReceived.ShouldBe(new object[] { b });
+            IBReceived.ShouldBe(new object[] { b });
+        }
+
+
         [Theory]
         [MemberData(nameof(GetTestData))]
         public void SetupContext(
@@ -79,12 +117,6 @@ namespace Mutopic.Tests.Middleware
 
 
 
-        interface IA { }
-        interface IB { }
-        interface IC { }
 
-        class A : IA { }
-        class B : A, IB { }
-        class C : IA, IC { }
     }
 }

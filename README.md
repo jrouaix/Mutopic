@@ -99,4 +99,51 @@ using (var observable = sut.SubscribeObservable<int>(TOPIC))
 ```
 
 
+### Use a middleware
+
+Have some inheritance
+```csharp
+interface IA { }
+interface IB { }
+interface IC { }
+
+class A : IA { }
+class B : A, IB { }
+class C : IA, IC { }
+```
+
+Build a pubsub with middleware
+```csharp
+const string TOPIC = "topic";
+
+var sut = new PubSubBuilder()
+    // this is a middleware
+    // it will propage messages in all their inheritance topic names
+    .WithMessageInheritancePublishing()
+    .Build();
+```
+
+Publish a message
+```csharp
+var b = new B();
+
+var topicReceived = new List<object>();
+var AReceived = new List<object>();
+var IBReceived = new List<object>();
+using (sut.Subscribe<object>(TOPIC, topicReceived.Add))
+using (sut.Subscribe<A>(typeof(A).Name, AReceived.Add))
+using (sut.Subscribe<IB>(typeof(IB).Name, IBReceived.Add))
+{
+    sut.Publish(b, TOPIC);
+}
+```
+
+Assertions
+```csharp
+// Message have been propagaged in multiple topic names
+topicReceived.ShouldBe(new object[] { b });
+AReceived.ShouldBe(new object[] { b });
+IBReceived.ShouldBe(new object[] { b });
+
+```    
 # <img alt="Mutopic" src="title.png" height="100">

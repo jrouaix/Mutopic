@@ -9,12 +9,6 @@ namespace Mutopic
     {
         readonly Stack<IPublishMiddleware> _middlewares = new Stack<IPublishMiddleware>();
 
-        public PubSubBuilder WithMessageInheritancePublishing()
-        {
-            _middlewares.Push(new MessageInheritancePublishMiddleware());
-            return this;
-        }
-
         public PubSubBuilder WithPublishMiddleware(IPublishMiddleware middleware)
         {
             _middlewares.Push(middleware);

@@ -1,8 +1,19 @@
-﻿using System;
+﻿using Mutopic.Middleware;
+using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+namespace Mutopic
+{
+    public static class PubSubBuilderMessageInheritancePublishMiddlewareExtensions
+    {
+        public static PubSubBuilder WithMessageInheritancePublishing(this PubSubBuilder builder)
+        {
+            builder.WithPublishMiddleware(new MessageInheritancePublishMiddleware());
+            return builder;
+        }
+    }
+}
 
 namespace Mutopic.Middleware
 {

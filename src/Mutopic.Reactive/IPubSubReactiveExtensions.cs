@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Mutopic.Reactive;
+using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 
-namespace Mutopic.Reactive
+namespace Mutopic
 {
     public static class IPubSubReactiveExtensions
     {

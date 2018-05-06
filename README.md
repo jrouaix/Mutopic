@@ -1,5 +1,5 @@
 
-# <img alt="icon" src="icon.png" height="50" align="center"> Mutopic
+# <img alt="icon" src="icon.png" height="30"> Mutopic
 Micro, yet turbocharged, C# pubsub library.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1mpqa3gly0xkg8wy/branch/master?svg=true)](https://ci.appveyor.com/project/JromeRx/mutopic/branch/master)

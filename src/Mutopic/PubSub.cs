@@ -36,13 +36,6 @@ namespace Mutopic
             {
                 PublishInternal(topic, context.message);
             }
-
-            // THIS WAS UNTESTED / UNUSED / CAN BE DONE EASY BY A PIPELINE ?
-            //var mes = message as IMessage;
-            //if (mes != null)
-            //{
-            //    await PublishInternal(mes.CorrelationId.ToString(), message).CAF();
-            //}
         }
 
 
@@ -105,8 +98,6 @@ namespace Mutopic
                 _subscribers.TryUpdate(topicName, newSubscriptions, previous);
             }
         }
-
-
 
         #endregion
 

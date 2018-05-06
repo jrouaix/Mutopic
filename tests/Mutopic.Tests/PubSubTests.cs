@@ -105,5 +105,30 @@ namespace Mutopic.Tests
 
             receivedCount.ShouldBe(1);
         }
+
+
+        [Fact]
+        public void Super_Hello_World()
+        {
+            const string TOPIC = "topicName";
+            var sut = new PubSubBuilder().Build();
+
+            var receivedA = new List<string>();
+            var receivedB = new List<int>();
+            var receivedC = new List<object>();
+
+            using (var subscriptionA = sut.Subscribe<string>(TOPIC, receivedA.Add))
+            using (var subscriptionB = sut.Subscribe<int>(TOPIC, receivedB.Add))
+            using (var subscriptionC = sut.Subscribe<object>(TOPIC, receivedC.Add))
+            {
+                sut.Publish(1, TOPIC);
+                sut.Publish("topic to rule them all", TOPIC);
+                sut.Publish("dead letter", "no_one_listen_this_topic"); // no handler subscribed on this topic
+            }
+
+            receivedA.ShouldBe(new string[] { "topic to rule them all" });
+            receivedB.ShouldBe(new int[] { 1 });
+            receivedC.ShouldBe(new object[] { 1, "topic to rule them all" });
+        }
     }
 }

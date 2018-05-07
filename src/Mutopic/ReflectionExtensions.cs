@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Mutopic
 {
+    /// <summary>
+    /// Some reflection helpers
+    /// </summary>
     public static class ReflectionExtensions
     {
-        public static Type[] GetAllInheritedTypes(this Type type, bool returnSelf = false)
+        /// <summary>
+        /// Get topic name from a type name.
+        /// Currently it's just a factorized way to call type.Name
+        /// </summary>
+        /// <param name="type">Type of the message</param>
+        /// <returns>Returns a topic name</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetTopicName(this Type type) => type.Name;
+
+        internal static Type[] GetAllInheritedTypes(this Type type, bool returnSelf = false)
         {
             return InternalGetAllInheritedTypes(type, returnSelf).Distinct().ToArray();
         }
@@ -25,7 +38,7 @@ namespace Mutopic
                     yield return inherited;
         }
 
-        public static IEnumerable<Type> GetAllInheritedInterfaces(this Type type, bool returnSelf = false)
+        internal static IEnumerable<Type> GetAllInheritedInterfaces(this Type type, bool returnSelf = false)
         {
             return InternalGetAllInheritedTypes(type, returnSelf)
                 .Where(t => t.IsInterface)

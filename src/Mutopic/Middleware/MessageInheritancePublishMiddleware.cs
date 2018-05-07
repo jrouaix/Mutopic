@@ -5,8 +5,16 @@ using System.Linq;
 
 namespace Mutopic
 {
+    /// <summary>
+    /// Middleware extensions
+    /// </summary>
     public static class PubSubBuilderMessageInheritancePublishMiddlewareExtensions
     {
+        /// <summary>
+        /// Add a middleware that will publish every message in the full base classes / interfaces inherited topic names.
+        /// </summary>
+        /// <param name="builder">Instance of PubSubBuilder</param>
+        /// <returns>Returns the same PubSubBuilder instance.</returns>
         public static PubSubBuilder WithMessageInheritancePublishing(this PubSubBuilder builder)
         {
             builder.WithPublishMiddleware(new MessageInheritancePublishMiddleware());
@@ -32,7 +40,7 @@ namespace Mutopic.Middleware
             var messageType = message.GetType();
             if (!_topicsFromTypeInheritance.TryGetValue(messageType, out var topicsFromTypeInheritance))
             {
-                topicsFromTypeInheritance = messageType.GetAllInheritedTypes(true).Select(t => t.Name).ToArray();
+                topicsFromTypeInheritance = messageType.GetAllInheritedTypes(true).Select(t => t.GetTopicName()).ToArray();
                 _topicsFromTypeInheritance.TryAdd(messageType, topicsFromTypeInheritance);
             }
 

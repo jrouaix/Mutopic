@@ -4,13 +4,16 @@ using System.Text;
 
 namespace Mutopic
 {
+    /// <summary>
+    /// Allow publishing a message in some topics
+    /// </summary>
     public interface IPublish
     {
         /// <summary>
-        /// Publish the message in all topic names and all sub classes/interfaces topics of the message.
+        /// Publish the message in all topic names.
         /// </summary>
         /// <param name="message">Message published</param>
-        /// <param name="topicNames">Named topic names</param>
+        /// <param name="topicNames">Named topics</param>
         void Publish(object message, params string[] topicNames);
     }
 }

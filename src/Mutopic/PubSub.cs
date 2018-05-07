@@ -70,7 +70,7 @@ namespace Mutopic
             void protectTypeHandler(object o) { if (o is T t) handler(t); }
 
             var subscription = new PubSubSubscription(this, topicName, protectTypeHandler);
-            
+
             lock (_syncLock)
             {
                 // handlers list is not thread safe and don't need to be.
@@ -100,7 +100,14 @@ namespace Mutopic
                 var newSubscriptions = new List<IPubSubSubscription>(previous);
                 newSubscriptions.Remove(subscription);
 
-                _subscribers.TryUpdate(topicName, newSubscriptions, previous);
+                if (newSubscriptions.Count == 0)
+                {
+                    _subscribers.TryRemove(topicName, out var _);
+                }
+                else
+                {
+                    _subscribers.TryUpdate(topicName, newSubscriptions, previous);
+                }
             }
         }
 

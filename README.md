@@ -99,10 +99,7 @@ using (var observable = sut.SubscribeObservable<int>(TOPIC))
 ```
 
 
-### Use a middleware
 
-Have some inheritance
-```csharp
 interface IA { }
 interface IB { }
 interface IC { }
@@ -146,4 +143,25 @@ AReceived.ShouldBe(new object[] { b });
 IBReceived.ShouldBe(new object[] { b });
 
 ```    
+
+### Exception handling
+
+Since no exception will buddle from a handler, a OnSubscriptionException event is exposed to collect eventual exception.
+Use it to log errors !
+
+```csharp
+var sut = new PubSubBuilder().Build();
+var received = new List<object>();
+sut.OnSubscriptionException += (sub, mess, ex) => { received.Add(mess); };
+
+using (var subscription = sut.Subscribe(TOPIC, (object message) => throw new IndexOutOfRangeException()))
+{
+    sut.Publish(42, TOPIC);
+    sut.Publish("message", TOPIC);
+    sut.Publish("dead letter", "no_one_listen_topic"); // no handler subscribed on this topic
+}
+
+received.ShouldBe(new object[] { 42, "message" });
+```
+
 # <img alt="Mutopic" src="title.png" height="100">

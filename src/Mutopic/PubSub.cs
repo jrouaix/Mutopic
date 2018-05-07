@@ -38,7 +38,6 @@ namespace Mutopic
             }
         }
 
-
         void PublishInternal(string topicName, object message)
         {
             if (_subscribers.TryGetValue(topicName, out var subscriptions))
@@ -61,6 +60,9 @@ namespace Mutopic
 
         #region Subscribe / Unsubscribe
 
+        /// <summary>
+        /// Will be used to prevent inconsistency when subscribe / unsubscribe
+        /// </summary>
         private readonly object _syncLock = new object();
 
         public IPubSubSubscription Subscribe<T>(string topicName, Action<T> handler)
@@ -68,9 +70,12 @@ namespace Mutopic
             void protectTypeHandler(object o) { if (o is T t) handler(t); }
 
             var subscription = new PubSubSubscription(this, topicName, protectTypeHandler);
-
+            
             lock (_syncLock)
             {
+                // handlers list is not thread safe and don't need to be.
+                // to be fast on Publish, the list of handlers will be never updated,
+                // only a new instance will replace it
                 if (_subscribers.TryGetValue(topicName, out var previousHandlers))
                 {
                     var newSubscriptions = new List<IPubSubSubscription>(previousHandlers) { subscription };

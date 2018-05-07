@@ -45,9 +45,10 @@ namespace Mutopic.Tests
         [Fact]
         public void Should_not_throw_exception_from_handler()
         {
-            var sut = new PubSub();
+            var sut = new PubSubBuilder().Build();
             var received = new List<object>();
-            sut.OnSubscriptionException += (sub, mess, ex) => { received.Add(mess); };
+            var exceptions = new List<Exception>();
+            sut.OnSubscriptionException += (sub, mess, ex) => { received.Add(mess); exceptions.Add(ex); };
 
             using (var subscription = sut.Subscribe(TOPIC, (object message) => throw new IndexOutOfRangeException()))
             {
@@ -57,6 +58,9 @@ namespace Mutopic.Tests
             }
 
             received.ShouldBe(new object[] { 42, "message" });
+            exceptions.Count.ShouldBe(2);
+            exceptions[0].ShouldBeAssignableTo<IndexOutOfRangeException>();
+            exceptions[1].ShouldBeAssignableTo<IndexOutOfRangeException>();
         }
 
         [Fact]

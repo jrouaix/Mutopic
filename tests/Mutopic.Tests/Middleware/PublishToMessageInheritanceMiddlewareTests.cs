@@ -34,8 +34,8 @@ namespace Mutopic.Tests.Middleware
             var AReceived = new List<object>();
             var IBReceived = new List<object>();
             using (sut.Subscribe<object>(TOPIC, topicReceived.Add))
-            using (sut.Subscribe<A>(typeof(A).Name, AReceived.Add))
-            using (sut.Subscribe<IB>(typeof(IB).Name, IBReceived.Add))
+            using (sut.Subscribe<A>(typeof(A).GetTopicName(), AReceived.Add))
+            using (sut.Subscribe<IB>(typeof(IB).GetTopicName(), IBReceived.Add))
             {
                 sut.Publish(b, TOPIC);
             }

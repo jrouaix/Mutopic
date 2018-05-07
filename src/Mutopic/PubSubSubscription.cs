@@ -4,20 +4,20 @@ using System.Text;
 
 namespace Mutopic
 {
-    internal class PubSubSubscription : IPubSubSubscription
+    internal sealed class PubSubSubscription : IPubSubSubscription
     {
-        readonly PubSub _pubsub;
+        readonly PubSub _pubSub;
         readonly string _topicName;
 
         public Action<object> Handler { get; }
 
-        public PubSubSubscription(PubSub pubsub, string topicName, Action<object> handler)
+        public PubSubSubscription(PubSub pubSub, string topicName, Action<object> handler)
         {
-            _pubsub = pubsub;
+            _pubSub = pubSub;
             _topicName = topicName;
             Handler = handler;
         }
 
-        public void Dispose() => _pubsub.Unsubscribe(_topicName, this);
+        public void Dispose() => _pubSub.Unsubscribe(_topicName, this);
     }
 }

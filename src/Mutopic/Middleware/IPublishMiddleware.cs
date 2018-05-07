@@ -9,6 +9,11 @@ namespace Mutopic.Middleware
     /// </summary>
     public interface IPublishMiddleware
     {
+        /// <summary>
+        /// Setup the publish context by changing it and returning it.
+        /// </summary>
+        /// <param name="context">Publishing context.</param>
+        /// <returns>an other instance of the context Tuple, changed if needed.</returns>
         (bool shouldPublish, object message, string[] topicNames) SetupContext((bool shouldPublish, object message, string[] topicNames) context);
     }
 }

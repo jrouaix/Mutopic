@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Mutopic.Reactive
 {
-    internal class ObservableSubscription<T> : IObservableSubscription<T>
+    internal sealed class ObservableSubscription<T> : IObservableSubscription<T>
     {
         private readonly IPubSubSubscription _subcription;
         private readonly Subject<T> _subject;

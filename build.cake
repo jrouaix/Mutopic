@@ -1,6 +1,6 @@
 #addin Cake.Git
 
-var packageVersion = "1.0.1";
+var packageVersion = "1.0.2";
 
 var target = Argument("target", "Default");
 var mygetApiKey = Argument<string>("mygetApiKey", null);
@@ -137,6 +137,7 @@ Task("Push")
 
 Task("Default")
     // .IsDependentOn("PrintEnvironment")
+    .IsDependentOn("PatchVersion")
     .IsDependentOn("Restore")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTest")

@@ -98,8 +98,10 @@ using (var observable = sut.SubscribeObservable<int>(TOPIC))
 }
 ```
 
+### Use middleware to build a publishing pipeline
 
-
+Given this class hierarchy
+```csharp
 interface IA { }
 interface IB { }
 interface IC { }

@@ -24,7 +24,7 @@ The best place to start will be examples (when added). For a moment, best exampl
 ### Subscribe multiple handlers
 
 ```csharp
-using Mutopic
+using Mutopic;
 ```
 
 Build a PubSub
@@ -152,7 +152,8 @@ Use it to log errors !
 ```csharp
 var sut = new PubSubBuilder().Build();
 var received = new List<object>();
-sut.OnSubscriptionException += (sub, mess, ex) => { received.Add(mess); };
+var exceptions = new List<Exception>();
+sut.OnSubscriptionException += (sub, mess, ex) => { received.Add(mess); exceptions.Add(ex); };
 
 using (var subscription = sut.Subscribe(TOPIC, (object message) => throw new IndexOutOfRangeException()))
 {
@@ -162,6 +163,9 @@ using (var subscription = sut.Subscribe(TOPIC, (object message) => throw new Ind
 }
 
 received.ShouldBe(new object[] { 42, "message" });
+exceptions.Count.ShouldBe(2);
+exceptions[0].ShouldBeAssignableTo<IndexOutOfRangeException>();
+exceptions[1].ShouldBeAssignableTo<IndexOutOfRangeException>();
 ```
 
 # <img alt="Mutopic" src="title.png" height="100">

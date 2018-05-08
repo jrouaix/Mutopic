@@ -148,7 +148,7 @@ IBReceived.ShouldBe(new object[] { b });
 
 ### Exception handling
 
-Since no exception will buddle from a handler, a OnSubscriptionException event is exposed to collect eventual exception.
+Since no exception will bubble from a handler, a OnSubscriptionException event is exposed to collect eventual exception.
 Use it to log errors !
 
 ```csharp

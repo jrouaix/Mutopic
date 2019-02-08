@@ -22,7 +22,6 @@
   <ItemGroup>
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
     <PackageReference Include="System.Reactive.Core" Version="4.1.2" />
-    <PackageReference Include="System.Reactive.PlatformServices" Version="4.1.2" />
   </ItemGroup>
 
   <ItemGroup>
